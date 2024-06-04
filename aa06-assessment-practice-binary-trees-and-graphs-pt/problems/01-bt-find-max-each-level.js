@@ -24,28 +24,29 @@ class TreeNode {
 // Expected Output -> [ 5, 7, 3, 9, 4 ]
 
 function findMaxEachLevel(root) {
-  const stack = [];
+
+  const queue = [root];
   const maxes = [];
 
   root.level = 0;
 
-  while (stack.length > 0) {
-      const curr = stack.pop();
+  while (queue.length > 0) {
+    const curr = queue.shift();
 
-      if (maxes[curr.level]) {
-          maxes[curr.level] = Math.min(curr.value, maxes[curr.level]);
-      } else {
-          maxes.push(curr.value);
-      }
+    if (maxes[curr.level]) {
+      maxes[curr.level] = Math.max(curr.value, maxes[curr.level]);
+    } else {
+      maxes.push(curr.value);
+    }
 
-      if (curr.left && curr.left >= curr.right) {
-          curr.left.level = curr.level + 1;
-          stack.unshift(curr.left);
-      }
-      if (curr.right && curr.right >= curr.left) {
-          curr.right.level = curr.level + 1;
-          stack.unshift(curr.right);
-      }
+    if (curr.left) {
+      curr.left.level = curr.level + 1;
+      queue.push(curr.left);
+    }
+    if (curr.right) {
+      curr.right.level = curr.level + 1;
+      queue.push(curr.right);
+    }
   }
 
   return maxes;
@@ -61,13 +62,13 @@ function findMaxEachLevel(root) {
 
 // // Build a tree for testing
 
-//   const simpleTree = new TreeNode(4, null, null);
-//   simpleTree.right = new TreeNode(1, null, null);
-//   simpleTree.left = new TreeNode(3, null, null);
-//   simpleTree.right.right = new TreeNode(2, null, null);
+const simpleTree = new TreeNode(4, null, null);
+simpleTree.right = new TreeNode(1, null, null);
+simpleTree.left = new TreeNode(3, null, null);
+simpleTree.right.right = new TreeNode(2, null, null);
 
 // // Test the function with the debug tree
-// console.log(findMaxEachLevel(simpleTree)); // -> [ 4, 3, 2 ]
+console.log(findMaxEachLevel(simpleTree)); // -> [ 4, 3, 2 ]
 
 /*******************************************************************************
  * Do not change the code after this line.
